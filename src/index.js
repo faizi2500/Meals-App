@@ -46,6 +46,7 @@ const menuItemes = async (mealType) => {
                   ${el.strMeal} <br>
                   <i class="far fa-heart likes"></i>
                   <span>${meallikes}</span>
+                  <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" id="comment">Comment</button>
                 </div>
             </div>`;
             contentArea.innerHTML += text;
@@ -58,11 +59,30 @@ const menuItemes = async (mealType) => {
                 likeMeal(e.target.parentNode.id);
               });
             });
+
+            const comment = document.querySelectorAll('#comment');
+            comment.forEach((each) => {
+              each.addEventListener('click', (e) => {
+                display(e.target.parentNode.id);
+
+              });
+            });
           });
         }
       });
     });
 };
+
+const modalTitle = document.querySelector('#modalTitle');
+const modalBody = document.querySelector('#modal-content')
+
+
+const display = async (id) => {
+  const response = await fetch(`https://www.themealdb.com/api/json/v1/1/lookup.php?i=${id}`);
+  const data = await response.json();
+  console.log(data.meals[0]);
+  modalTitle.textContent = data.meals[0].strMeal;
+}
 
 const navBtns = [...navArea.children];
 
