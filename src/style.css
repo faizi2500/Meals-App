@@ -9,7 +9,7 @@ body {
 }
 
 .content {
-  width: 77%;
+  width: 78%;
   margin: auto;
 }
 
@@ -22,4 +22,14 @@ body {
 .fa-heart {
   color: red;
   cursor: pointer;
+}
+
+.imageModal {
+  width: 100%;
+  height: 280px;
+  margin: auto;
+}
+
+ul li {
+  list-style: none;
 }

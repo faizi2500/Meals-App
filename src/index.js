@@ -90,7 +90,7 @@ const displayModal = async (id) => {
         commentText.innerHTML = commentsTitle;
         if (comments.length) {
           const ul = document.createElement('ul');
-          ul.classList.add('list-group-flush');
+          ul.classList.add('list-group');
           comments.forEach((el) => {
             const li = document.createElement('li');
             const text = `<li class="list-group-item">${el.creation_date} <b>${el.username}</b> ${el.comment} </li>`;
@@ -126,8 +126,8 @@ const displayMenuItems = async (mealCategory) => {
       data.meals.forEach((el, index) => {
         if (index < 6) {
           mealLikes(el.idMeal).then((meallikes) => {
-            const text = `<div class="col-lg-4 col-md-6 mb-4">
-                <div class="card shadow border-1">
+            const text = `<div class="col-lg-4 col-md-6 mb-3">
+                <div class="card shadow border-1 m-1">
                 <img src=${el.strMealThumb} width="100%" height="100"/>
                 <div class="card-body" id="${el.idMeal}">
                   ${el.strMeal} <br>
