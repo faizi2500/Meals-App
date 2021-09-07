@@ -66,7 +66,7 @@ const menuItemes = async (mealType) => {
 
           mealLikes(el.idMeal).then((meallikes) => {
             const text = `<div class="col-lg-4 col-md-6 mb-4">
-                <div class="card">
+                <div class="card shadow">
                 <img src=${el.strMealThumb} width="100%" height="100"/>
                 <div class="card-body" id="${el.idMeal}">
                   ${el.strMeal} <br>
