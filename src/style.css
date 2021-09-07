@@ -8,12 +8,13 @@ body {
 }
 
 .content {
-  width: 80%;
+  width: 77%;
   margin: auto;
 }
 
 .active {
-  text-decoration: underline;
+  text-transform: uppercase;
+  font-size: large;
   font-weight: bolder;
 }
 

@@ -3,16 +3,17 @@ import './style.css';
 
 const navArea = document.querySelector('#navArea');
 const contentArea = document.querySelector('#contentArea');
-
+const modalTitle = document.querySelector('#modalTitle');
+const modalBody = document.querySelector('#modal-content');
+const modalImage = document.querySelector('#modalImage');
+const contentModalBody = document.querySelector('#contentModalBody');
 const likesAppURL = 'https://us-central1-involvement-api.cloudfunctions.net/capstoneApi/apps/wugJLYSzQnqoaIruIx0N/likes/';
 const commentsAppURL = 'https://us-central1-involvement-api.cloudfunctions.net/capstoneApi/apps/wugJLYSzQnqoaIruIx0N/comments/';
 
 const likeMeal = async (mealID) => {
   await fetch(likesAppURL, {
     method: 'POST',
-    headers: {
-      'Content-type': 'application/json; charset=UTF-8',
-    },
+    headers: { 'Content-type': 'application/json; charset=UTF-8' },
     body: JSON.stringify({
       item_id: mealID,
     }),
@@ -22,9 +23,7 @@ const likeMeal = async (mealID) => {
 const commentMeal = async (itemId, data) => {
   await fetch(commentsAppURL, {
     method: 'POST',
-    headers: {
-      'Content-type': 'application/json; charset=UTF-8',
-    },
+    headers: { 'Content-type': 'application/json; charset=UTF-8' },
     body: JSON.stringify({
       item_id: itemId,
       username: data.username,
@@ -51,58 +50,6 @@ const mealComments = async (mealID) => {
   const data = await res.json();
   return data;
 };
-
-const menuItemes = async (mealType) => {
-  await fetch(`https://www.themealdb.com/api/json/v1/1/filter.php?c=${mealType}`)
-    .then((res) => res.json())
-    .then((data) => {
-      contentArea.innerHTML = '';
-      data.meals.forEach((el, index) => {
-        if (index < 6) {
-          let commentsLength = 0;
-          mealComments(el.idMeal).then((comments) => {
-            if (comments.length) commentsLength = comments.length;
-          });
-
-          mealLikes(el.idMeal).then((meallikes) => {
-            const text = `<div class="col-lg-4 col-md-6 mb-4">
-                <div class="card shadow">
-                <img src=${el.strMealThumb} width="100%" height="100"/>
-                <div class="card-body" id="${el.idMeal}">
-                  ${el.strMeal} <br>
-                  <i class="far fa-heart likes"></i>
-                  <span>${meallikes} Likes</span><br>
-                  <button type="button" class="btn btn-sm btn-primary mt-3" data-bs-toggle="modal"
-                  data-bs-target="#contentModalBody" id="comment">Comments (${commentsLength})</button>
-                </div>
-            </div>`;
-            contentArea.innerHTML += text;
-
-            const likes = document.querySelectorAll('.likes');
-            likes.forEach((like) => {
-              like.addEventListener('click', (e) => {
-                const mealLike = e.target.parentNode.children[2].textContent;
-                e.target.parentNode.children[2].textContent = `${Number(mealLike.match(/\d+/)[0]) + 1} Likes`;
-                likeMeal(e.target.parentNode.id);
-              });
-            });
-
-            const comments = document.querySelectorAll('#comment');
-            comments.forEach((each) => {
-              each.addEventListener('click', (e) => {
-                displayModal(e.target.parentNode.id);
-              });
-            });
-          });
-        }
-      });
-    });
-};
-
-const modalTitle = document.querySelector('#modalTitle');
-const modalBody = document.querySelector('#modal-content');
-const modalImage = document.querySelector('#modalImage');
-const contentModalBody = document.querySelector('#contentModalBody');
 
 const displayModal = async (id) => {
   await fetch(`https://www.themealdb.com/api/json/v1/1/lookup.php?i=${id}`).then((res) => res.json()).then((data) => {
@@ -171,15 +118,63 @@ const displayModal = async (id) => {
   });
 };
 
+const displayMenuItems = async (mealCategory) => {
+  await fetch(`https://www.themealdb.com/api/json/v1/1/filter.php?c=${mealCategory}`)
+    .then((res) => res.json())
+    .then((data) => {
+      contentArea.innerHTML = '';
+      data.meals.forEach((el, index) => {
+        if (index < 6) {
+          mealLikes(el.idMeal).then((meallikes) => {
+            const text = `<div class="col-lg-4 col-md-6 mb-4">
+                <div class="card shadow border-1">
+                <img src=${el.strMealThumb} width="100%" height="100"/>
+                <div class="card-body" id="${el.idMeal}">
+                  ${el.strMeal} <br>
+                  <i class="far fa-heart likes"></i>
+                  <span>${meallikes} Likes</span><br>
+                  <button type="button" class="btn btn-sm btn-primary mt-2" data-bs-toggle="modal"
+                  data-bs-target="#contentModalBody" id="comment">Comments</button>
+                </div>
+            </div>`;
+            contentArea.innerHTML += text;
+
+            const likes = document.querySelectorAll('.likes');
+            likes.forEach((like) => {
+              like.addEventListener('click', (e) => {
+                const mealLike = e.target.parentNode.children[2].textContent;
+                e.target.parentNode.children[2].textContent = `${Number(mealLike.match(/\d+/)[0]) + 1} Likes`;
+                likeMeal(e.target.parentNode.id);
+              });
+            });
+
+            const comments = document.querySelectorAll('#comment');
+            comments.forEach((each) => {
+              each.addEventListener('click', (e) => {
+                displayModal(e.target.parentNode.id);
+              });
+            });
+          });
+        }
+      });
+    });
+};
+
 const navBtns = [...navArea.children];
 
 navBtns.forEach((val) => {
   const nav = document.querySelector(`#${val.children[0].id}`);
   nav.addEventListener('click', (e) => {
-    menuItemes(e.target.textContent);
+    [...e.target.parentNode.parentNode.children].forEach((el) => {
+      el.children[0].classList.remove('active');
+    });
+    e.target.classList.add('active');
+    displayMenuItems(e.target.textContent);
   });
 });
 
 window.onload = () => {
-  menuItemes('Seafood');
+  const navItems = document.querySelectorAll('.nav-item');
+  navItems[0].children[0].classList.add('active');
+  displayMenuItems('Seafood');
 };
