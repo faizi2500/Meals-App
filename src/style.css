@@ -16,3 +16,8 @@ body {
   text-decoration: underline;
   font-weight: bolder;
 }
+
+.fa-heart {
+  color: red;
+  cursor: pointer;
+}
