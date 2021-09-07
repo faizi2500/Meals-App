@@ -2,7 +2,17 @@ body {
   margin: 0;
 }
 
-.content {
-  width: 91%;
+.navbar {
+  width: 89%;
   margin: auto;
+}
+
+.content {
+  width: 80%;
+  margin: auto;
+}
+
+.active {
+  text-decoration: underline;
+  font-weight: bolder;
 }
