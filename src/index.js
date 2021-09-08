@@ -74,7 +74,7 @@ const displayModal = async (id) => {
               <textarea name="comment" id="commentBody" placeholder="Your comment..." class="form-control"></textarea>
             </div>
             <div class="form-group d-grid mb-3">
-              <button type="button" class="btn btn-primary" id="btnComment" data-bs-dismiss="modal">Comment</button>
+              <button type="button" class="btn btn-sm btn-primary rounded-pill" id="btnComment" data-bs-dismiss="modal">Comment</button>
             </div>
             </small>
           </div>`;
@@ -124,16 +124,16 @@ const displayMenuItems = async (mealCategory) => {
     .then((data) => {
       contentArea.innerHTML = '';
       data.meals.forEach((el, index) => {
-        if (index < 6) {
+        if (index < 8) {
           mealLikes(el.idMeal).then((meallikes) => {
-            const text = `<div class="col-lg-4 col-md-6 mb-3">
+            const text = `<div class="col-lg-3 col-md-6 mb-3">
                 <div class="card shadow border-1 m-1">
-                <img src=${el.strMealThumb} width="100%" height="100"/>
+                <img src=${el.strMealThumb} width="100%" height="120"/>
                 <div class="card-body" id="${el.idMeal}">
                   ${el.strMeal} <br>
                   <i class="far fa-heart likes"></i>
                   <span>${meallikes} Likes</span><br>
-                  <button type="button" class="btn btn-sm btn-primary mt-2" data-bs-toggle="modal"
+                  <button type="button" class="btn btn-sm btn-primary mt-2 rounded-pill" data-bs-toggle="modal"
                   data-bs-target="#contentModalBody" id="comment">Comments</button>
                 </div>
             </div>`;
