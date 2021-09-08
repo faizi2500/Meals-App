@@ -6,7 +6,7 @@
 
 Click here for [LIVE DEMO](https://faizi2500.github.io/Meals-App/dist/)
 
-[](./src/MealApp.jpg)
+[ScreenShot](./src/MealApp1.png)
 
 Additional description about the project and its features.
 
