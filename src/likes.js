@@ -1,4 +1,3 @@
-
 const likesAppURL = 'https://us-central1-involvement-api.cloudfunctions.net/capstoneApi/apps/wugJLYSzQnqoaIruIx0N/likes/';
 
 const likeMeal = async (mealID) => {

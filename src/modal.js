@@ -1,4 +1,4 @@
-import { mealComments, commentMeal } from './comment'
+import { mealComments, commentMeal } from './comment';
 
 const modalTitle = document.querySelector('#modalTitle');
 const modalBody = document.querySelector('#modal-content');
@@ -67,4 +67,4 @@ const displayModal = async (id) => {
   });
 };
 
-  export default displayModal;
+export default displayModal;

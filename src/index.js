@@ -1,20 +1,20 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './style.css';
-import { likeMeal, mealLikes } from './likes';
-import displayModal from './modal'
+import { likeMeal, mealLikes } from './likes.js';
+import displayModal from './modal.js';
 
 const navArea = document.querySelector('#navArea');
 const contentArea = document.querySelector('#contentArea');
 
-const displayMenuItems = async (mealCategory) => {
+const displayMenuItems = async (mealCategory, menuTarget) => {
   await fetch(`https://www.themealdb.com/api/json/v1/1/filter.php?c=${mealCategory}`)
     .then((res) => res.json())
     .then((data) => {
       contentArea.innerHTML = '';
-      data.meals.forEach((el, index) => {
-        if (index < 8) {
-          mealLikes(el.idMeal).then((meallikes) => {
-            const text = `<div class="col-lg-3 col-md-6 mb-3">
+
+      data.meals.forEach((el) => {
+        mealLikes(el.idMeal).then((meallikes) => {
+          const text = `<div class="col-lg-3 col-md-6 mb-3">
                 <div class="card shadow border-1 m-1">
                 <img src=${el.strMealThumb} width="100%" height="120"/>
                 <div class="card-body" id="${el.idMeal}">
@@ -25,26 +25,26 @@ const displayMenuItems = async (mealCategory) => {
                   data-bs-target="#contentModalBody" id="comment">Comments</button>
                 </div>
             </div>`;
-            contentArea.innerHTML += text;
+          contentArea.innerHTML += text;
 
-            const likes = document.querySelectorAll('.likes');
-            likes.forEach((like) => {
-              like.addEventListener('click', (e) => {
-                const mealLike = e.target.parentNode.children[2].textContent;
-                e.target.parentNode.children[2].textContent = `${Number(mealLike.match(/\d+/)[0]) + 1} Likes`;
-                likeMeal(e.target.parentNode.id);
-              });
-            });
-
-            const comments = document.querySelectorAll('#comment');
-            comments.forEach((each) => {
-              each.addEventListener('click', (e) => {
-                displayModal(e.target.parentNode.id);
-              });
+          const likes = document.querySelectorAll('.likes');
+          likes.forEach((like) => {
+            like.addEventListener('click', (e) => {
+              const mealLike = e.target.parentNode.children[2].textContent;
+              e.target.parentNode.children[2].textContent = `${Number(mealLike.match(/\d+/)[0]) + 1} Likes`;
+              likeMeal(e.target.parentNode.id);
             });
           });
-        }
+
+          const comments = document.querySelectorAll('#comment');
+          comments.forEach((each) => {
+            each.addEventListener('click', (e) => {
+              displayModal(e.target.parentNode.id);
+            });
+          });
+        });
       });
+      menuTarget.textContent = data.meals !== null ? `${mealCategory} (${data.meals.length})` : 0;
     });
 };
 
@@ -57,12 +57,12 @@ navBtns.forEach((val) => {
       el.children[0].classList.remove('active');
     });
     e.target.classList.add('active');
-    displayMenuItems(e.target.textContent);
+    displayMenuItems(e.target.textContent, e.target);
   });
 });
 
 window.onload = () => {
   const navItems = document.querySelectorAll('.nav-item');
   navItems[0].children[0].classList.add('active');
-  displayMenuItems('Seafood');
+  displayMenuItems('Seafood', navItems[0].children[0]);
 };

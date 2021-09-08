@@ -1,4 +1,3 @@
-
 const commentsAppURL = 'https://us-central1-involvement-api.cloudfunctions.net/capstoneApi/apps/wugJLYSzQnqoaIruIx0N/comments/';
 
 const commentMeal = async (itemId, data) => {
