@@ -2,6 +2,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import './style.css';
 import { likeMeal, mealLikes } from './likes.js';
 import displayModal from './modal.js';
+import { mealsCounter } from './counter.js';
 
 const navArea = document.querySelector('#navArea');
 const contentArea = document.querySelector('#contentArea');
@@ -44,7 +45,7 @@ const displayMenuItems = async (mealCategory, menuTarget) => {
           });
         });
       });
-      menuTarget.textContent = data.meals !== null ? `${mealCategory} (${data.meals.length})` : 0;
+      mealsCounter(data.meals, mealCategory, menuTarget);
     });
 };
 

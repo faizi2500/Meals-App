@@ -1,4 +1,5 @@
 import { mealComments, commentMeal } from './comment';
+import { commentsCounter } from './counter.js';
 
 const modalTitle = document.querySelector('#modalTitle');
 const modalBody = document.querySelector('#modal-content');
@@ -38,7 +39,7 @@ const displayModal = async (id) => {
       modalBody.innerHTML = text;
       const commentText = document.querySelector('#commentTexts');
       mealComments(id).then((comments) => {
-        const commentsTitle = `<h6 class="text-center">Comments(${comments.length ? comments.length : 0})</h6>`;
+        const commentsTitle = `<h6 class="text-center">Comments(${commentsCounter(comments)})</h6>`;
         commentText.innerHTML = commentsTitle;
         if (comments.length) {
           const ul = document.createElement('ul');
