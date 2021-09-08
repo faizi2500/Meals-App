@@ -13,9 +13,10 @@ const displayMenuItems = async (mealCategory, menuTarget) => {
     .then((data) => {
       contentArea.innerHTML = '';
 
-      data.meals.forEach((el) => {
-        mealLikes(el.idMeal).then((meallikes) => {
-          const text = `<div class="col-lg-3 col-md-6 mb-3">
+      data.meals.forEach((el, index) => {
+        if (index <= 8) {
+          mealLikes(el.idMeal).then((meallikes) => {
+            const text = `<div class="col-lg-3 col-md-6 mb-3">
                 <div class="card shadow border-1 m-1">
                 <img src=${el.strMealThumb} width="100%" height="120"/>
                 <div class="card-body" id="${el.idMeal}">
@@ -26,24 +27,27 @@ const displayMenuItems = async (mealCategory, menuTarget) => {
                   data-bs-target="#contentModalBody" id="comment">Comments</button>
                 </div>
             </div>`;
-          contentArea.innerHTML += text;
+            contentArea.innerHTML += text;
 
-          const likes = document.querySelectorAll('.likes');
-          likes.forEach((like) => {
-            like.addEventListener('click', (e) => {
-              const mealLike = e.target.parentNode.children[2].textContent;
-              e.target.parentNode.children[2].textContent = `${Number(mealLike.match(/\d+/)[0]) + 1} Likes`;
-              likeMeal(e.target.parentNode.id);
+            const likes = document.querySelectorAll('.likes');
+            likes.forEach((like) => {
+              like.addEventListener('click', (e) => {
+                const mealLike = e.target.parentNode.children[2].textContent;
+                const mealLiked = likeMeal(e.target.parentNode.id);
+                if (mealLiked) {
+                  e.target.parentNode.children[2].textContent = `${Number(mealLike.match(/\d+/)[0]) + 1} Likes`;
+                }
+              });
+            });
+
+            const comments = document.querySelectorAll('#comment');
+            comments.forEach((each) => {
+              each.addEventListener('click', (e) => {
+                displayModal(e.target.parentNode.id);
+              });
             });
           });
-
-          const comments = document.querySelectorAll('#comment');
-          comments.forEach((each) => {
-            each.addEventListener('click', (e) => {
-              displayModal(e.target.parentNode.id);
-            });
-          });
-        });
+        }
       });
       mealsCounter(data.meals, mealCategory, menuTarget);
     });

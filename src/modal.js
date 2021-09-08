@@ -1,4 +1,4 @@
-import { mealComments, commentMeal } from './comment';
+import { mealComments, commentMeal } from './comment.js';
 import { commentsCounter } from './counter.js';
 
 const modalTitle = document.querySelector('#modalTitle');
@@ -33,11 +33,13 @@ const displayModal = async (id) => {
             </div>
             </small>
           </div>`;
+
       contentModalBody.classList.remove('d-none');
       modalImage.setAttribute('src', data.meals[0].strMealThumb);
       modalTitle.innerText = data.meals[0].strMeal;
       modalBody.innerHTML = text;
       const commentText = document.querySelector('#commentTexts');
+
       mealComments(id).then((comments) => {
         const commentsTitle = `<h6 class="text-center">Comments(${commentsCounter(comments)})</h6>`;
         commentText.innerHTML = commentsTitle;
@@ -55,6 +57,7 @@ const displayModal = async (id) => {
       });
     }
   });
+
   const userName = document.querySelector('#userName');
   const commentBody = document.querySelector('#commentBody');
   const btnComment = document.querySelector('#btnComment');

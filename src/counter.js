@@ -1,16 +1,11 @@
-
 const mealsCounter = (data, mealCategory, menuTarget) => {
-  if(data.length){
-    menuTarget.textContent = data !== null ? `${mealCategory} (${data.length})` : 0;
-    return true
+  if (data.length && mealCategory) {
+    menuTarget.textContent = `${mealCategory} (${data.length})`;
+    return true;
   }
-  else {
-    return false;
-  }
+  return false;
 };
 
-const commentsCounter = (comments) => {
-  return comments.length ? comments.length : 0
-}
+const commentsCounter = (comments) => (comments.length ? comments.length : 0);
 
-export  { mealsCounter, commentsCounter };
+export { mealsCounter, commentsCounter };
