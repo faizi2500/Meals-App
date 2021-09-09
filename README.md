@@ -4,7 +4,9 @@
 
 > Meal App is an app that shows 3 different categories of food. In each category there are 6 different meals within that category. Meal DB API provides the data about categories and all the meals. Meal App has homepage and comment modal section. App allows user to like and comment.
 
-Click here for [LIVE DEMO](https://faizi2500.github.io/Meals-App/dist/)
+[Click here for LIVE DEMO](https://faizi2500.github.io/Meals-App/dist/)
+
+[Click here for PRESENTATION](https://youtu.be/UjgLEqnCMzI)
 
 ![](./src/MealApp1.png)
 
