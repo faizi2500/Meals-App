@@ -6,6 +6,24 @@ const modalBody = document.querySelector('#modal-content');
 const modalImage = document.querySelector('#modalImage');
 const contentModalBody = document.querySelector('#contentModalBody');
 
+const getComments = (id, commentText) => {
+  mealComments(id).then((comments) => {
+    const commentsTitle = `<h6 class="text-center" id="commentsTitle">Comments(${commentsCounter(comments)})</h6>`;
+    commentText.innerHTML += commentsTitle;
+    if (comments.length) {
+      const ul = document.createElement('ul');
+      ul.classList.add('list-group');
+      comments.forEach((el) => {
+        const li = document.createElement('li');
+        const text = `<li class="list-group-item">${el.creation_date} <b>${el.username}</b> ${el.comment} </li>`;
+        li.innerHTML = text;
+        ul.appendChild(li);
+      });
+      commentText.appendChild(ul);
+    }
+  });
+};
+
 const displayModal = async (id) => {
   await fetch(`https://www.themealdb.com/api/json/v1/1/lookup.php?i=${id}`).then((res) => res.json()).then((data) => {
     if (data) {
@@ -22,14 +40,19 @@ const displayModal = async (id) => {
           <small id="commentTexts" class="mb-2"></small>
           <small>
           <h6 class="text-center mt-2">Add a comment</h6>
+          <p class="error text-center" id="errorText"></p>
             <div class="form-group mb-2">
               <input type="text" id="userName" class="form-control" placeholder="Your name...">
             </div>
             <div class="form-group mb-2">
               <textarea name="comment" id="commentBody" placeholder="Your comment..." class="form-control"></textarea>
             </div>
+
+            <div class="btn-group" role="group" style="width: 100%;">
+              <button type="button" class="btn btn-sm btn-primary" id="btnComment">Comment</button>
+              <button type="button" class="btn btn-sm btn-danger" data-bs-dismiss="modal">Close</button>
+            </div>
             <div class="form-group d-grid mb-3">
-              <button type="button" class="btn btn-sm btn-primary rounded-pill" id="btnComment" data-bs-dismiss="modal">Comment</button>
             </div>
             </small>
           </div>`;
@@ -40,34 +63,39 @@ const displayModal = async (id) => {
       modalBody.innerHTML = text;
       const commentText = document.querySelector('#commentTexts');
 
-      mealComments(id).then((comments) => {
-        const commentsTitle = `<h6 class="text-center">Comments(${commentsCounter(comments)})</h6>`;
-        commentText.innerHTML = commentsTitle;
-        if (comments.length) {
-          const ul = document.createElement('ul');
-          ul.classList.add('list-group');
-          comments.forEach((el) => {
-            const li = document.createElement('li');
-            const text = `<li class="list-group-item">${el.creation_date} <b>${el.username}</b> ${el.comment} </li>`;
-            li.innerHTML = text;
-            ul.appendChild(li);
-          });
-          commentText.appendChild(ul);
+      getComments(id, commentText);
+
+      const userName = document.querySelector('#userName');
+      const commentBody = document.querySelector('#commentBody');
+      const btnComment = document.querySelector('#btnComment');
+      const errorText = document.querySelector('#errorText');
+
+      btnComment.addEventListener('click', (e) => {
+        e.preventDefault();
+        const commentsTitle = document.querySelector('#commentsTitle');
+
+        if (userName.value && commentBody.value) {
+          errorText.innerHTML = '';
+          const data = {
+            username: userName.value,
+            comment: commentBody.value,
+          };
+          const commentNumber = commentsTitle.textContent;
+          commentsTitle.textContent = `Comments(${Number(commentNumber.match(/\d+/)[0]) + 1})`;
+
+          const addedComment = `<li class="list-group-item">
+              ${new Date().toISOString().slice(0, 10)} <b>${data.username}</b> ${data.comment} 
+          </li>`;
+
+          commentText.innerHTML += addedComment;
+          userName.value = '';
+          commentBody.value = '';
+          commentMeal(id, data);
+        } else {
+          errorText.innerHTML = 'Name and comment are required';
         }
       });
     }
-  });
-
-  const userName = document.querySelector('#userName');
-  const commentBody = document.querySelector('#commentBody');
-  const btnComment = document.querySelector('#btnComment');
-  btnComment.addEventListener('click', (e) => {
-    e.preventDefault();
-    const data = {
-      username: userName.value,
-      comment: commentBody.value,
-    };
-    commentMeal(id, data);
   });
 };
 

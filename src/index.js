@@ -14,7 +14,7 @@ const displayMenuItems = async (mealCategory, menuTarget) => {
       contentArea.innerHTML = '';
 
       data.meals.forEach((el, index) => {
-        if (index <= 8) {
+        if (index <= 7) {
           mealLikes(el.idMeal).then((meallikes) => {
             const text = `<div class="col-lg-3 col-md-6 mb-3">
                 <div class="card shadow border-1 m-1">

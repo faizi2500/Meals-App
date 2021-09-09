@@ -24,6 +24,11 @@ body {
   cursor: pointer;
 }
 
+.error {
+  color: red;
+  text-align: center;
+}
+
 .imageModal {
   width: 100%;
   height: 300px;
